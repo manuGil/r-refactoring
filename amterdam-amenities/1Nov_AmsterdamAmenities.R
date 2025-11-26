@@ -19,7 +19,7 @@ packages <- c(
   "lubridate", "magick", "magrittr",
   "grid", "extrafont", "bsicons",
   "showtext", "sysfonts",
-  "fontawesome", "terra", "devtools",
+  "fontawesome", "terra", 
   "usethis",
   "ggtext"
 )
