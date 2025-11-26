@@ -45,7 +45,7 @@ cat("All specified packages have been loaded successfully!\n")
 ### 2. Import 3DBAG tiles
 
 
-tiles <- st_read(here("data/3DBAG_tiles.shp"))
+tiles <- st_read(here("building-density", "data/3DBAG_tiles.shp"))
 
 
 ### 3. Calculate building density per tile
@@ -69,7 +69,7 @@ plot(tiles)
 ### 4. Import city labels from Natural Earth Data
 
 
-cities_labels <- st_read(here("data/ne_10m_populated_places_simple.shp"))
+cities_labels <- st_read(here("building-density", "data/ne_10m_populated_places_simple.shp"))
 
 
 # Transform the CRS of cities_labels to match tiles extent
@@ -86,7 +86,7 @@ cities_labels <- cities_labels %>% filter(iso_a2 == "NL") # Check the result plo
 ### 5. Import provinces from CBS
 
 
-provincies <- st_read(here("data/provincies.shp"))
+provincies <- st_read(here("building-density", "data/provincies.shp"))
 
 
 ### 6. Simplify provinces
@@ -279,7 +279,7 @@ tiles_p
 
 
 # Define the output file name
-output_file <- "output/example_map.png"
+output_file <- "building-density/output/example_map.png"
 
 # Export the map as a PNG with 1:1 aspect ratio
 ggsave(

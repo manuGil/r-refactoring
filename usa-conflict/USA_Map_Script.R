@@ -22,7 +22,7 @@ conflict_data_filtered <- conflict_data %>%
 conflict_points <- st_as_sf(conflict_data_filtered, coords = c("longitude", "latitude"), crs = 4326)
 
 # Step 3: Load County Shapefile
-counties <- st_read("tl_2020_us_county.shp"). # TODO request file
+counties <- st_read("tl_2020_us_county.shp") # TODO request file
 
 # Filter counties for the contiguous U.S.
 contiguous_counties <- counties %>%
