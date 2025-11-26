@@ -9,9 +9,9 @@ library(maps)
 library(cowplot)
 
 # Set working directory to the maps folder
-setwd("/Users/mgarciaalvarez/devel/r-refactoring/maps")
+setwd("/Users/mgarciaalvarez/devel/r-refactoring")
 # Step 2: Load Conflict Data
-conflict_data <- read.csv("USA_Canada_2020_2024_Nov15.csv")
+conflict_data <- read.csv("usa-conflict/USA_Canada_2020_2024_Nov15.csv")
 
 # Filter to only include contiguous U.S.
 conflict_data_filtered <- conflict_data %>%
@@ -22,7 +22,8 @@ conflict_data_filtered <- conflict_data %>%
 conflict_points <- st_as_sf(conflict_data_filtered, coords = c("longitude", "latitude"), crs = 4326)
 
 # Step 3: Load County Shapefile
-counties <- st_read("tl_2020_us_county.shp") # TODO request file
+
+counties <- st_read("usa-conflict/tl_2020_us_county.shp", quiet = TRUE) # TODO: try after converting the file via QGIS
 
 # Filter counties for the contiguous U.S.
 contiguous_counties <- counties %>%
@@ -35,7 +36,7 @@ states <- st_as_sf(maps::map("state", plot = FALSE, fill = TRUE)) %>%
 
 # Step 5: Load Population Data
 # Extract the FIPS code from STATE and COUNTY and select the population column
-population_data <- read.csv("co-est2020-alldata.csv") %>%
+population_data <- read.csv("usa-conflict/co-est2020-alldata.csv") %>%
     mutate(FIPS = sprintf("%02d%03d", STATE, COUNTY)) %>% # Create FIPS column
     select(FIPS, POPESTIMATE2020) # Use the most recent population estimate
 
