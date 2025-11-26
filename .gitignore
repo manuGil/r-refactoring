@@ -6,6 +6,9 @@
 .RData
 .RDataTmp
 
+# Map Images
+*.png
+
 # User-specific files
 .Ruserdata
 
