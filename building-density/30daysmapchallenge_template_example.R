@@ -1,0 +1,296 @@
+# ---
+# title: "#30DMC_template"
+# author: "Daniele Cannatella"
+# date: "2024-10-25"
+# format:
+#   html: default
+#   pdf: default
+# ---
+
+# #30daysmapchallenge template
+
+# This template is designed to guide you through the challenge, providing structured steps and helpful resources for each mapping task. Whether you're a seasoned cartographer or just starting your journey, we hope you find inspiration and joy in visualizing data and sharing your work with the community. Let's embark on this mapping adventure together!
+
+# This template uses a polygon map as an example to illustrate the process of creating visually engaging and informative maps with R. It is designed to guide you through the challenge, providing structured steps and helpful resources for each mapping task.
+
+## A polygon Map39
+
+### 1. Package Installation and Loading
+
+
+# Define the packages to be used
+packages <- c("ggplot2", "dplyr", "sf", "readr", "tidyr", "rmapshaper", "showtext", "here")
+
+# Function to check if packages are installed and load them
+load_packages <- function(pkgs) {
+    # Check for missing packages
+    missing_pkgs <- pkgs[!(pkgs %in% installed.packages()[, "Package"])]
+
+    # Install missing packages
+    if (length(missing_pkgs)) {
+        install.packages(missing_pkgs)
+    }
+
+    # Load all packages
+    lapply(pkgs, library, character.only = TRUE)
+}
+
+# Load the packages
+load_packages(packages)
+
+# Print a message to confirm successful loading
+cat("All specified packages have been loaded successfully!\n")
+
+
+### 2. Import 3DBAG tiles
+
+
+tiles <- st_read(here("data/3DBAG_tiles.shp"))
+
+
+### 3. Calculate building density per tile
+
+
+# Remove duplicate geometries from tiles
+
+tiles <- tiles %>% st_as_sf() %>% # Ensure it's an sf object
+    distinct() # Remove duplicate rows based on geometry and attributes
+
+tiles$area <- as.numeric(st_area(tiles))
+
+tiles$bdens <- tiles$obj_nr_bui / (tiles$area / 1000000)
+# Calculate density (n. buildings/km2)
+
+
+tiles
+plot(tiles)
+
+
+### 4. Import city labels from Natural Earth Data
+
+
+cities_labels <- st_read(here("data/ne_10m_populated_places_simple.shp"))
+
+
+# Transform the CRS of cities_labels to match tiles extent
+
+cities_labels <- st_transform(cities_labels, crs = st_crs(tiles))
+
+# Perform the intersection
+
+cities_labels <- st_intersection(tiles, cities_labels)
+
+cities_labels <- cities_labels %>% filter(iso_a2 == "NL") # Check the result plot(st_geometry(cities_labels))
+
+
+### 5. Import provinces from CBS
+
+
+provincies <- st_read(here("data/provincies.shp"))
+
+
+### 6. Simplify provinces
+
+
+# Step 1: Simplify the polygons (reduce number of vertices)
+provincies_simple <- ms_simplify(provincies, keep = 0.01) # Keep 1% of original vertices
+
+# Step 2: Extract the simplified polygon coordinates
+# Use st_geometry() to extract only the geometries, and then apply st_coordinates
+simple_coords <- st_coordinates(st_geometry(provincies_simple))
+
+# Step 3: Snap the coordinates to 8 cardinal directions
+# Define the cardinal directions (N, S, E, W, NE, NW, SE, SW)
+directions <- c(0, 45, 90, 135, 180, 225, 270, 315) # Angles in degrees
+
+# Define the snapping function
+snap_to_direction <- function(x, y, directions) {
+    # Calculate angle from origin (x, y) and snap to the nearest direction
+    angle <- atan2(y, x) * 180 / pi
+    angle <- (angle + 360) %% 360 # Normalize angle to [0, 360]
+    closest_direction <- directions[which.min(abs(directions - angle))]
+
+    # Calculate the new snapped coordinates
+    rad <- closest_direction * pi / 180
+    new_x <- cos(rad) * sqrt(x^2 + y^2)
+    new_y <- sin(rad) * sqrt(x^2 + y^2)
+
+    return(c(new_x, new_y))
+}
+
+# Apply the snapping function to each vertex (loop over the coordinates)
+snapped_coords <- apply(simple_coords, 1, function(coord) snap_to_direction(coord[1], coord[2], directions))
+
+# Reshape snapped_coords into the correct format for polygons (a matrix of x, y)
+snapped_matrix <- matrix(snapped_coords, ncol = 2, byrow = TRUE)
+
+# Step 4: Close the polygon by ensuring the first and last vert
+
+provincies_simple2 <- st_simplify(provincies_simple, dTolerance = 2000) # More simplification
+
+
+# even more simplification!
+
+# Load or create your spatial data
+# For example, using a sample of tiles
+# tiles <- st_read("path_to_your_shapefile")
+
+# Step 1: Simplify the polygons (reduce number of vertices)
+provincies_simple3 <- ms_simplify(provincies_simple2, keep = 0.5) # Keep 1% of original vertices
+
+# Step 2: Extract the simplified polygon coordinates
+# Use st_geometry() to extract only the geometries, and then apply st_coordinates
+simple_coords <- st_coordinates(st_geometry(provincies_simple3))
+
+# Step 3: Snap the coordinates to 8 cardinal directions
+# Define the cardinal directions (N, S, E, W, NE, NW, SE, SW)
+directions <- c(0, 45, 90, 135, 180, 225, 270, 315) # Angles in degrees
+
+# Define the snapping function
+snap_to_direction <- function(x, y, directions) {
+    # Calculate angle from origin (x, y) and snap to the nearest direction
+    angle <- atan2(y, x) * 180 / pi
+    angle <- (angle + 360) %% 360 # Normalize angle to [0, 360]
+    closest_direction <- directions[which.min(abs(directions - angle))]
+
+    # Calculate the new snapped coordinates
+    rad <- closest_direction * pi / 180
+    new_x <- cos(rad) * sqrt(x^2 + y^2)
+    new_y <- sin(rad) * sqrt(x^2 + y^2)
+
+    return(c(new_x, new_y))
+}
+
+# Apply the snapping function to each vertex (loop over the coordinates)
+snapped_coords <- apply(simple_coords, 1, function(coord) snap_to_direction(coord[1], coord[2], directions))
+
+# Reshape snapped_coords into the correct format for polygons (a matrix of x, y)
+snapped_matrix <- matrix(snapped_coords, ncol = 2, byrow = TRUE)
+
+# Step 4: Close the polygon by ensuring the first and last vert
+
+provincies_simple4 <- st_make_valid(provincies_simple3)
+provincies_simple4 <- st_snap(provincies_simple4, provincies_simple4, tolerance = 0.001)
+
+
+# Apply a small buffer to close gaps or remove overlaps
+buffered_polygons <- st_buffer(provincies_simple4, dist = 2000) # Small positive buffer
+unbuffered_polygons <- st_buffer(buffered_polygons, dist = -2000) # Remove the buffer
+
+provincies_simple5 <- buffered_polygons
+
+
+## Plot the Polygon map
+
+### 1. Set the ggplot
+
+
+tiles_p <- ggplot() +
+    geom_sf(data = provincies_simple5, fill = "#103251", color = "#EDF292") +
+    geom_sf(data = tiles, fill = "NA", color = "#103251", size = 0.1, linetype = "dotted", alpha = 0.1) +
+    geom_sf(data = tiles, aes(alpha = bdens), fill = "white", color = NA) +
+    scale_alpha_continuous(range = c(0.05, 1)) +
+    geom_sf(data = cities_labels, color = "#EDF292", size = 1, alpha = 0.25) +
+    geom_sf_text(
+        data = cities_labels, aes(label = name), color = "#EDF292",
+        family = "script",
+        alpha = 1,
+        nudge_x = 0.1, # Adjust this value to move the labels horizontally
+        nudge_y = 0.1 # Adjust this value to move the labels vertically
+    )
+
+# Add city labels with nudging to avoid overlap with the polygons
+# geom_sf_label(data = cities_labels,
+#              aes(label = name), color = "#EDF292",
+#              nudge_x = 0.2,  # Adjust horizontally
+#              nudge_y = 0.2,  # Adjust vertically
+#              label.size = 0.1,
+#              family = "script")
+
+tiles_p
+
+
+### 2. Style and export the map
+
+#### 2.1 Add custom fonts
+
+
+# Add Google Fonts to the system
+showtext_auto() # Automatically use showtext for text rendering
+font_add_google("Roboto", "roboto") # Add the "Roboto" font from Google Fonts
+font_add_google("Lobster", "script") # Add the "Roboto" f
+
+
+#### 2.2 Plot your map
+
+
+tiles_p <- tiles_p +
+    theme_void() +
+    theme(
+        plot.background = element_rect(fill = "#103251", color = NA), # Set bg color
+        plot.margin = margin(10, 10, 10, 10), # Adjust margins
+        legend.position = "bottom", # Move the legend to the bottom
+        legend.box = "horizontal", # Arrange legends horizontally in bottom
+        legend.title = element_blank(), # Remove the title for the fill legend
+        legend.text = element_text(
+            size = 13,
+            family = "script",
+            color = "white"
+        ), # Adjust text size and fon
+        plot.title = element_text(
+            size = 34,
+            face = "bold",
+            family = "script",
+            color = "white"
+        ), # Title font customization
+        plot.subtitle = element_text(
+            size = 13,
+            family = "script",
+            color = "white"
+        ), # Adjust text size and font legend
+        plot.caption = element_text(
+            size = 13,
+            family = "script",
+            color = "white"
+        ),
+        legend.key.height = unit(1, "cm"), # Adjust height to make keys squared
+        legend.key.width = unit(1, "cm"), # Adjust width to match height
+    ) +
+
+    # Add a title to the map
+    ggtitle("How many buildings are in the Netherlands?") + # Add your map title here
+
+    # Control legend appearance
+    labs(
+        title = "Building density in the Netherlands",
+        subtitle = "per 3D bag tile",
+        caption = "Source: 3DBAG, Author: Daniele Cannatella",
+        fill = "Object Number"
+    ) + # Add a label for the fill legend
+
+    # Control legend appearance
+    # Adjust the legend to have two rows
+    guides(
+        fill = guide_legend(ncol = 1, nrow = 2, keyheight = unit(0.25, "cm"), keywidth = unit(0.25, "cm"))
+    )
+
+
+tiles_p
+
+
+# Define the output file name
+output_file <- "output/example_map.png"
+
+# Export the map as a PNG with 1:1 aspect ratio
+ggsave(
+    filename = output_file, plot = tiles_p, device = "png",
+    width = 6, height = 6, units = "in", dpi = 300
+)
+
+# Print a message to confirm export
+cat("Map has been exported as", output_file, "with a 1:1 aspect ratio.\n")
+
+
+## And here is the map!
+
+# ![Example Map](output/example_map.png){#fig:example_map}
