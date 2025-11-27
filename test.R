@@ -1,8 +1,9 @@
 # Main script to create all maps
 # Expected behavior:
 ## Sequentially runs all individual analysis scripts
-## PNG files are generated in their respective directories
+## PNG files are generated in their respective output directories
 ## No errors should occur during execution
+## Warnings are OK.
 
 # Run Amsterdam Amenities analysis
 # message("Running Amsterdam Amenities analysis...")
