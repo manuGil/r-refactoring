@@ -19,7 +19,8 @@ Follow these steps to refactor the code in this repository. Do as much as time a
 - [ ] Reduce Cyclomatic Complexity. Break down large functions into smaller, more manageable ones. Each function should ideally do one thing.
 - [ ] Compose methods. Combine related functions into classes or modules to improve organization and readability. Rename functions, variables, files, directories to better reflect the code's purpose and behavior.
 
-> [!TIP] If you don't know where to start, you could:
+> [!TIP] 
+> If you don't know where to start, you could:
 > 1. Take a few scripts and work on declutter. 
 > 2. Create general functions to be reused across maps. 
 
