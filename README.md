@@ -1,5 +1,6 @@
-# r-refactoring
-R cafe: refactoring code
+# Nice and Clean: Refactoring Code
+
+Simple refactoring techniques to make R code easier to read, maintain, and share. 
 
 ## Purpose
 
