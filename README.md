@@ -1,4 +1,4 @@
-# Nice and Clean: Refactoring Code
+# TU Delft R Cafe | Nice and Clean: Refactoring Code
 
 Simple refactoring techniques to make R code easier to read, maintain, and share. 
 
