@@ -23,7 +23,7 @@ conflict_points <- st_as_sf(conflict_data_filtered, coords = c("longitude", "lat
 
 # Step 3: Load County Shapefile
 
-counties <- st_read("usa-conflict/tl_2020_us_county.shp", quiet = TRUE) # TODO: try after converting the file via QGIS
+counties <- st_read("usa-conflict/tl_2020_us_county.shp", quiet = TRUE) # TODO: fix reding file error
 
 # Filter counties for the contiguous U.S.
 contiguous_counties <- counties %>%
