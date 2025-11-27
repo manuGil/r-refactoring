@@ -2,9 +2,9 @@
 
 > Author: Dave Farley
 
-:::info
-Refactoring is the process of restructuring existing computer code—changing the factoring—without changing its external behavior. Its main purpose is to improve nonfunctional attributes of the software.
-:::
+> [!NOTE]
+> This file exist for the save of explanation of the refactoring steps mentioned in README.md. It does not belong to the code and should eventually be removed from the repository.
+
 
 ### 1. Write Approval Tests
 
