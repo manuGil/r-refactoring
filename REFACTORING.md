@@ -26,7 +26,7 @@ Create software test for the code that will be refactored. *Approval tests* are 
 
 ### 4. Composing Methods
 
-- Make each extracted method (or function) tell its own story. This requires to understand the context of the code within a program and how its expected to be read and interpreted by other developers. Software is written using programming languages, and code is no more than text, scripts and methods can consired as large and small chapters of a book which tell stories of what a program does. Ideally, each method tells a single, well structured and easy-to-understand story. If that's not the case, the code is poorly written, and should be refactored. 
+- Make each extracted method (or function) tell its own story. This requires to understand the context of the code within a program and how its expected to be read and interpreted by other developers. Software is written using programming languages, and code is no more than text, scripts and methods can be consired as large or small chapters of a book which tell stories of what a program does. Ideally, each method tells a single, well structured and easy-to-understand story. If that's not the case, the code is poorly written, and should be refactored. 
 - Rename things (functions, classes, variables), so that their behaviour is clear in the code.
 
    
