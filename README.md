@@ -1,6 +1,6 @@
 # TU Delft R Cafe |  Refactoring Code
 
-Simple refactoring techniques to make R code easier to read, maintain, and share. 
+Simple refactoring techniques to make R code easier to read, maintain, and share. An exercise for experiencing 'code refactoring' at the [TU Delft R-Cafe](https://delft-rcafe.github.io/home/).
 
 ## Purpose
 
@@ -12,7 +12,8 @@ For simplicity, only a few maps are provided as examples. Now, it's time to clea
 
 ## Hands-on
 
-Follow these steps to refactor the code in this repository. Do as much as time allows. A more detailed explanation of the steps is provided in [REFACTORING.md](REFACTORING.md).
+Clone this repository into RStudio and follow the steps below to refactor the code in this repository. Do as much as time allows. 
+A more detailed explanation of the steps is provided in [REFACTORING.md](REFACTORING.md).
 
 - [x] Write approval tests. A tests that runs the code for three maps is provided in `test.R`. You can run it with `testthat::test_file("test.R")`. Make sure it passes before starting refactoring.
 - [ ] Reduce clutter. Remove commented-out code, unnecessary print statements, and any redundant code.
