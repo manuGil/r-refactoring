@@ -1,6 +1,6 @@
 ## Refactoring Techniques: 4-steps method
 
-> Author: Dave Farley
+> By: Dave Farley
 
 > [!NOTE]
 > This file exist for the save of explanation of the refactoring steps mentioned in README.md. It does not belong to the code and should eventually be removed from the repository.
