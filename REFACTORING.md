@@ -18,7 +18,7 @@ Create software test for the code that will be refactored. *Approval tests* are 
 
 ### 3. Reduce Cyclomatic Complexity
 
-> Cyclomatric complexity refers to the number of logical branches or pathways used in the code to implement a program's functionality (behaviour). The overuse of **if statements** and **loops** is an indication of code with high levels of cyclomatic complexity.
+> **Cyclomatric complexity** refers to the number of logical branches or pathways used in the code to implement a program's functionality (behaviour). The overuse of **if statements** and **loops** is an indication of code with high levels of cyclomatic complexity.
 
 - Reduce branching/pathways of the code.
 - Bring related code together, and keep unrelated code apart.
