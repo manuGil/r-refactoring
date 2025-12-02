@@ -12,13 +12,14 @@ For simplicity, only a few maps are provided as examples. Now, it's time to clea
 
 ## Hands-on
 
-Clone this repository into RStudio and follow the steps below to refactor the code in this repository. Do as much as time allows. 
-A more detailed explanation of the steps is provided in [REFACTORING.md](REFACTORING.md).
+1. Start a new RStudio project using **Version Control -> Git**. Copy the URL of repository into the **Clone Git Repository** dialog, and click **Create Project**. 
 
-- [x] Write approval tests. A tests that runs the code for three maps is provided in `test.R`. You can run it with `testthat::test_file("test.R")`. Make sure it passes before starting refactoring.
-- [ ] Reduce clutter. Remove commented-out code, unnecessary print statements, and any redundant code.
-- [ ] Reduce Cyclomatic Complexity. Break down large functions into smaller, more manageable ones. Each function should ideally do one thing.
-- [ ] Compose methods. Combine related functions into classes or modules to improve organization and readability. Rename functions, variables, files, directories to better reflect the code's purpose and behavior.
+2. Follow the steps below to refactor the code in this repository. Do as much as time allows. A more detailed explanation of the steps is provided in [REFACTORING.md](REFACTORING.md).
+
+    - [x] Write approval tests. A tests that runs the code for three maps is provided in `test.R`. You can run it with `testthat::test_file("test.R")`. Make sure it passes before starting refactoring.
+    - [ ] Reduce clutter. Remove commented-out code, unnecessary print statements, and any redundant code.
+    - [ ] Reduce Cyclomatic Complexity. Break down large functions into smaller, more manageable ones. Each function should ideally do one thing.
+    - [ ] Compose methods. Combine related functions into classes or modules to improve organization and readability. Rename functions, variables, files, directories to better reflect the code's purpose and behavior.
 
 > [!TIP] 
 > If you don't know where to start, you could:
