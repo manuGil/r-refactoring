@@ -24,7 +24,7 @@ For simplicity, only a few maps are provided as examples. Now, it's time to clea
 > [!TIP] 
 > If you don't know where to start, you could:
 > 1. Take a few scripts and work on declutter. 
-> 2. Create general functions to be reused across maps. 
+> 2. Create general-purpose functions to be reused across maps. 
 
 ## Learn More
 
