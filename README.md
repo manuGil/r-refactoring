@@ -28,5 +28,5 @@ For simplicity, only a few maps are provided as examples. Now, it's time to clea
 
 ## Learn More
 
-- [DCC Guides | Python and R (comming soon) examples](https://tu-delft-dcc.github.io/docs/software/code_quality/refactoring.html)
+- [DCC Guides | Refactoring and code smells with R examples](https://tu-delft-dcc.github.io/docs/software/code_quality/refactoring.html)
 - [Refactoring Guru | General guidelines and language agnostic](https://refactoring.guru/)
